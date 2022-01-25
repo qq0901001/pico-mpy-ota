@@ -1,5 +1,3 @@
-
-
 def connectToWifiAndUpdate():
     import time, machine, network, gc, app.secrets as secrets
     time.sleep(1)
