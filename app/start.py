@@ -1,16 +1,21 @@
 import machine
 import utime
 
-VER = '1.0'
+# 
+version = ''
+# 
+f = open('/version.txt')
+if f :
+    version = f.read()
 
 led_onboard = machine.Pin(2, machine.Pin.OUT)
 
 while True:
-    print ('Version:' + VER)
+    print ('Version:' + version)
     led_onboard.value(1) 
-    utime.sleep_ms(500) 
+    utime.sleep_ms(200) 
     led_onboard.value(0) 
-    utime.sleep_ms(500) 
+    utime.sleep_ms(1000) 
 
     
 
