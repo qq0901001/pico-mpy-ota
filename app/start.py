@@ -1,16 +1,16 @@
-import time
-from machine import Pin, PWM, Timer
+import machine
+import utime
 
 VER = '1.0'
 
-led = Pin(25, Pin.OUT)
+led_onboard = machine.Pin(2, machine.Pin.OUT)
 
-#
-def tick(timer):
-    global led
-    led.toggle()
+while True:
     print ('Version:' + VER)
+    led_onboard.value(1) 
+    utime.sleep_ms(500) 
+    led_onboard.value(0) 
+    utime.sleep_ms(500) 
 
-#
-tim = Timer()
-tim.init(freq=1, mode=Timer.PERIODIC, callback=tick)
+    
+

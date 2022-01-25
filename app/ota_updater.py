@@ -24,7 +24,7 @@ class OTAUpdater:
         
         This method expects an active internet connection and will compare the current 
         version with the latest version available on GitHub.
-        If a newer version is available, the file 'next/.version' will be created 
+        If a newer version is available, the file 'next/version.txt' will be created 
         and you need to call machine.reset(). A reset is needed as the installation process 
         takes up a lot of memory (mostly due to the http stack)
 
@@ -45,15 +45,15 @@ class OTAUpdater:
         """This method will install the latest version if out-of-date after boot.
         
         This method, which should be called first thing after booting, will check if the 
-        next/.version' file exists. 
+        next/version.txt' file exists. 
 
         - If yes, it initializes the WIFI connection, downloads the latest version and installs it
         - If no, the WIFI connection is not initialized as no new known version is available
         """
 
         if self.new_version_dir in os.listdir(self.module):
-            if '.version' in os.listdir(self.modulepath(self.new_version_dir)):
-                latest_version = self.get_version(self.modulepath(self.new_version_dir), '.version')
+            if 'version.txt' in os.listdir(self.modulepath(self.new_version_dir)):
+                latest_version = self.get_version(self.modulepath(self.new_version_dir), 'version.txt')
                 print('New update found: ', latest_version)
                 OTAUpdater._using_network(ssid, password)
                 self.install_update_if_available()
@@ -110,15 +110,17 @@ class OTAUpdater:
 
     def _create_new_version_file(self, latest_version):
         self.mkdir(self.modulepath(self.new_version_dir))
-        with open(self.modulepath(self.new_version_dir + '/.version'), 'w') as versionfile:
+        with open(self.modulepath(self.new_version_dir + '/version.txt'), 'w') as versionfile:
             versionfile.write(latest_version)
             versionfile.close()
 
-    def get_version(self, directory, version_file_name='.version'):
+    def get_version(self, directory, version_file_name='version.txt'):
         if version_file_name in os.listdir(directory):
             with open(directory + '/' + version_file_name) as f:
                 version = f.read()
+                print('version_file_name:%s version:%s' % (version_file_name, version))
                 return version
+        print('version:0.0')
         return '0.0'
 
     def get_latest_version(self):
